@@ -51,7 +51,7 @@ List<RestaurantModel> _nearbyFoodData = [
       id: 1,
       name: "Rapid-Action Coaching",
       tag: "Chicken, Rice",
-      image: "assets/images/onboarding/1.jpeg",
+      image: "assets/images/RapidActionCoaching.jpg",
       rating: 4.9,
       distance: 0.4,
       promo: '500/hr',
@@ -60,7 +60,7 @@ List<RestaurantModel> _nearbyFoodData = [
       id: 2,
       name: "Personal Impact Coaching",
       tag: "Beef, Yakiniku, Japanese Food",
-      image: "assets/images/onboarding/2.jpeg",
+      image: "assets/images/PersonalImpactCoaching.jpg",
       rating: 5,
       distance: 0.6,
       promo: '500/hr',
@@ -69,7 +69,7 @@ List<RestaurantModel> _nearbyFoodData = [
       id: 3,
       name: "Executive Leadership Coaching",
       tag: "Healthy Food, Salad",
-      image: "assets/images/onboarding/3.jpeg",
+      image: "assets/images/ExecutiveLeadershipCoaching.jpg",
       rating: 4.3,
       distance: 0.7,
       promo: '500/hr',
@@ -78,7 +78,7 @@ List<RestaurantModel> _nearbyFoodData = [
       id: 4,
       name: "Executive Leadership Team Coaching",
       tag: "Hot, Fresh, Steam",
-      image: "assets/images/onboarding/4.jpeg",
+      image: "assets/images/ExecutiveLeadershipteamCoaching.jpg",
       rating: 4.9,
       distance: 0.7,
       promo: '500/hr',
@@ -87,7 +87,7 @@ List<RestaurantModel> _nearbyFoodData = [
       id: 5,
       name: "Transition Coaching",
       tag: "Penne, Western Food",
-      image: "https://2micoaching.com/wp-content/uploads/2021/12/1.jpg",
+      image: "assets/images/TransitionCoaching.jpg",
       rating: 4.6,
       distance: 0.9,
       promo: '500/hr',
@@ -220,7 +220,11 @@ class _HomePageState extends State<HomePage> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text('Services',
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                      fontSize: 14,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Trebuchet MS')),
               GestureDetector(
                 onTap: () {
                   Navigator.push(
@@ -275,7 +279,7 @@ class _HomePageState extends State<HomePage> {
                       topLeft: Radius.circular(10),
                       bottomLeft: Radius.circular(10)),
                   child: new Image.asset(
-                    _nearbyFoodData[index].image!,
+                    _nearbyFoodData[index].image,
                     width: (MediaQuery.of(context).size.width / 2) * (1.6 / 4) -
                         12 -
                         1,
@@ -449,7 +453,7 @@ class _HomePageState extends State<HomePage> {
                       topLeft: Radius.circular(10),
                       topRight: Radius.circular(10)),
                   child: new Image.asset(
-                    _nearbyFoodData[index].image!,
+                    _nearbyFoodData[index].image,
                     width: boxImageSize,
                     height: boxImageSize,
                   )
@@ -475,7 +479,7 @@ class _HomePageState extends State<HomePage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('\$ ' + _nearbyFoodData[index].promo!,
+                          Text('\$ ' + _nearbyFoodData[index].promo,
                               style: TextStyle(
                                   fontSize: 13, fontWeight: FontWeight.bold)),
                           Text(
@@ -491,7 +495,7 @@ class _HomePageState extends State<HomePage> {
                       child: Row(
                         children: [
                           Icon(Icons.location_on, color: SOFT_GREY, size: 12),
-                          Text(' ' + _nearbyFoodData[index].location!,
+                          Text(' ' + _nearbyFoodData[index].location,
                               style: TextStyle(fontSize: 11, color: SOFT_GREY))
                         ],
                       ),
@@ -501,7 +505,7 @@ class _HomePageState extends State<HomePage> {
                       child: Row(
                         children: [
                           _globalWidget.createRatingBar(
-                              rating: _nearbyFoodData[index].rating!, size: 12),
+                              rating: _nearbyFoodData[index].rating, size: 12),
                           Text('(' + _nearbyFoodData[index].location + ')',
                               style: TextStyle(fontSize: 11, color: SOFT_GREY))
                         ],
@@ -538,8 +542,11 @@ class _HomePageState extends State<HomePage> {
           ),
           Container(
               child: Text(
-            "Raising Conscious Leaders",
-            style: TextStyle(fontSize: 35, fontWeight: FontWeight.w600),
+            "RAISING CONSCIOUS LEADERS",
+            style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.w500,
+                fontFamily: 'Trebuchet MS'),
             textAlign: TextAlign.center,
           )),
           // SizedBox(

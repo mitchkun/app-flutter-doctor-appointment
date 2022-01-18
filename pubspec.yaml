@@ -84,6 +84,8 @@ dependencies:
   random_string: ^2.3.1
   page_transition: ^2.0.4
   horizontal_calendar_widget: ^1.0.1
+  animated_splash_screen: ^1.1.0-nullsafety.0
+  lottie: ^1.2.1
   # page_transition: ^1.1.4
   # simple_animations: ^1.1.3
 
@@ -141,7 +143,12 @@ flutter:
   - assets/images/direction.png
   - assets/images/stop.png
   - assets/images/background.jpg
-  - assets/images/lady.png
+  - assets/images/appsplash.png
+  - assets/images/ExecutiveLeadershipCoaching.jpg
+  - assets/images/ExecutiveLeadershipteamCoaching.jpg
+  - assets/images/PersonalImpactCoaching.jpg
+  - assets/images/RapidActionCoaching.jpg
+  - assets/images/TransitionCoaching.jpg
 
   - assets/images/onboarding/1.jpeg
   - assets/images/onboarding/2.jpeg
