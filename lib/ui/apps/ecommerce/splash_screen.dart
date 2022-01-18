@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:doctor_app/config/apps/ecommerce/constant.dart';
+import 'package:doctor_app/pages/home.dart';
 import 'package:doctor_app/theme/extention.dart';
 import 'package:doctor_app/theme/light_color.dart';
 import 'package:doctor_app/theme/text_styles.dart';
@@ -8,6 +9,9 @@ import 'package:doctor_app/ui/apps/ecommerce/onboarding.dart';
 import 'package:doctor_app/ui/screen/onboarding/onboarding1.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:animated_splash_screen/animated_splash_screen.dart';
+import 'package:flutter/material.dart';
+import 'package:page_transition/page_transition.dart';
 
 class SplashScreenPage extends StatefulWidget {
   @override
@@ -27,8 +31,8 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
       if (_second == 0) {
         _cancelFlashsaleTimer();
         // for this example we will use pushReplacement because we want to go back to the list
-        Navigator.pushReplacement(context,
-            MaterialPageRoute(builder: (context) => Onboarding1Page()));
+        Navigator.pushReplacement(
+            context, MaterialPageRoute(builder: (context) => Home()));
 
         // if you use this splash screen on the very first time when you open the page, use below code
         //Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => OnBoardingPage()), (Route<dynamic> route) => false);
@@ -105,20 +109,20 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
                 child: SizedBox(),
               ),
               Image.asset(
-                'assets/images/logo_horizontal.png',
+                'assets/images/appsplash.png',
                 // color: Colors.white,
-                height: 100,
+                // height: 300,
               ),
-              Text(
-                "Your Coaching Expert",
-                style: TextStyles.h1Style.white,
-                textAlign: TextAlign.justify,
-              ),
-              Image.asset(
-                'assets/images/lady.png',
-                // color: Colors.white,
-                height: 200,
-              ),
+              // Text(
+              //   "Your Coaching Expert",
+              //   style: TextStyles.h1Style.white,
+              //   textAlign: TextAlign.justify,
+              // ),
+              // Image.asset(
+              //   'assets/images/lady.png',
+              //   // color: Colors.white,
+              //   height: 200,
+              // ),
               // Text(
               //   "The Scientific Way to Test",
               //   style: TextStyles.bodySm.white.bold,
