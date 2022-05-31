@@ -29,19 +29,19 @@ class ReusableWidget {
       },
       child: Stack(
         children: [
-          Icon(Icons.shopping_bag_outlined, color: BLACK21, size: 42),
+          Icon(Icons.shopping_bag_outlined, color: BLACK21, size: 30.0),
           Positioned(
             right: 0,
-            bottom: 0,
+            top: 0,
             child: Container(
-              padding: EdgeInsets.all(1),
+              padding: EdgeInsets.all(0.8),
               decoration: BoxDecoration(
                 color: PRIMARY_COLOR,
                 borderRadius: BorderRadius.circular(14),
               ),
               constraints: BoxConstraints(
-                minWidth: 16,
-                minHeight: 16,
+                minWidth: 12,
+                minHeight: 12,
               ),
               child: Center(
                 child: Text(

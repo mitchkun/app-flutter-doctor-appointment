@@ -7,10 +7,13 @@ import 'package:doctor_app/theme/light_color.dart';
 import 'package:doctor_app/theme/text_styles.dart';
 import 'package:doctor_app/ui/apps/ecommerce/onboarding.dart';
 import 'package:doctor_app/ui/screen/onboarding/onboarding1.dart';
+import 'package:doctor_app/ui/screen/signin/signin2.dart';
+import 'package:doctor_app/ui/screen/signup/signup2.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:nb_utils/nb_utils.dart';
 import 'package:page_transition/page_transition.dart';
 
 class SplashScreenPage extends StatefulWidget {
@@ -23,16 +26,25 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
   int _second = 3; // set timer for 3 second and then direct to next page
 
   void _startTimer() {
-    const period = const Duration(seconds: 1);
+    const period = const Duration(seconds: 3);
     _timer = Timer.periodic(period, (timer) {
       setState(() {
         _second--;
       });
       if (_second == 0) {
         _cancelFlashsaleTimer();
+        SharedPreferences.getInstance().then((prefs) {
+          if (prefs.getBool("loggedin") ?? true) {
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => Signin2Page()));
+          } else {
+            Navigator.pushReplacement(
+                context, MaterialPageRoute(builder: (context) => Home()));
+          }
+        });
         // for this example we will use pushReplacement because we want to go back to the list
-        Navigator.pushReplacement(
-            context, MaterialPageRoute(builder: (context) => Home()));
+        // Navigator.pushReplacement(
+        //     context, MaterialPageRoute(builder: (context) => Home()));
 
         // if you use this splash screen on the very first time when you open the page, use below code
         //Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => OnBoardingPage()), (Route<dynamic> route) => false);

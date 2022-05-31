@@ -10,22 +10,8 @@ const labelDate = 'Date';
 const labelWeekDay = 'Week Day';
 
 class DoctorTimeSlot extends StatefulWidget {
-  final String doctorType, experience, name, address, image;
-  final phone, lat, lang;
   //final double cost;
 
-  const DoctorTimeSlot({
-    required Key key,
-    required this.doctorType,
-    required this.experience,
-    required this.name,
-    required this.address,
-    @required this.phone,
-    required this.image,
-    @required this.lat,
-    @required this.lang,
-    //@required this.cost
-  }) : super(key: key);
   @override
   _DoctorTimeSlotState createState() => _DoctorTimeSlotState();
 }
@@ -122,29 +108,29 @@ class _DoctorTimeSlotState extends State<DoctorTimeSlot> {
 
   String convertNumberMonthToStringMonth(month) {
     if (month == 1) {
-      monthString = 'January 2021';
+      monthString = 'January 2022';
     } else if (month == 2) {
-      monthString = 'February 2021';
+      monthString = 'February 2022';
     } else if (month == 3) {
-      monthString = 'March 2021';
+      monthString = 'March 2022';
     } else if (month == 4) {
-      monthString = 'April 2021';
+      monthString = 'April 2022';
     } else if (month == 5) {
-      monthString = 'May 2021';
+      monthString = 'May 2022';
     } else if (month == 6) {
-      monthString = 'June 2021';
+      monthString = 'June 2022';
     } else if (month == 7) {
-      monthString = 'July 2021';
+      monthString = 'July 2022';
     } else if (month == 8) {
-      monthString = 'August 2021';
+      monthString = 'August 2022';
     } else if (month == 9) {
-      monthString = 'September 2021';
+      monthString = 'September 2022';
     } else if (month == 10) {
-      monthString = 'October 2021';
+      monthString = 'October 2022';
     } else if (month == 11) {
-      monthString = 'November 2021';
+      monthString = 'November 2022';
     } else if (month == 12) {
-      monthString = 'December 2021';
+      monthString = 'December 2022';
     }
     return monthString;
   }
@@ -238,7 +224,7 @@ class _DoctorTimeSlotState extends State<DoctorTimeSlot> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Hero(
-                          tag: widget.image,
+                          tag: "assets/images/RapidActionCoaching.jpg",
                           child: Container(
                             width: 76.0,
                             height: 76.0,
@@ -255,7 +241,8 @@ class _DoctorTimeSlotState extends State<DoctorTimeSlot> {
                                 ),
                               ],
                               image: DecorationImage(
-                                image: AssetImage(widget.image),
+                                image: AssetImage(
+                                    "assets/images/RapidActionCoaching.jpg"),
                                 fit: BoxFit.fitHeight,
                               ),
                             ),
@@ -271,7 +258,7 @@ class _DoctorTimeSlotState extends State<DoctorTimeSlot> {
                                 children: [
                                   Expanded(
                                     child: Text(
-                                      ' ${widget.name}',
+                                      ' Rapid Action Coaching',
                                       style: blackNormalBoldTextStyle,
                                       overflow: TextOverflow.ellipsis,
                                     ),
@@ -299,17 +286,17 @@ class _DoctorTimeSlotState extends State<DoctorTimeSlot> {
                               ),
                               SizedBox(height: 7.0),
                               Text(
-                                widget.doctorType,
+                                "Online",
                                 style: greyNormalTextStyle,
                               ),
                               SizedBox(height: 7.0),
                               Text(
-                                '${widget.experience} Years Experience',
+                                '10 Years Experience',
                                 style: primaryColorNormalTextStyle,
                               ),
                               SizedBox(height: 7.0),
                               Text(
-                                '\E$cost',
+                                '\$200/hr',
                                 style: blackHeadingTextStyle,
                               ),
                             ],

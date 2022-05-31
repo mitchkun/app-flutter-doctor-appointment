@@ -1,3 +1,4 @@
+import 'package:doctor_app/ui/screen/signup/signup2.dart';
 import 'package:universal_io/io.dart';
 
 import 'package:flutter/material.dart';
@@ -13,9 +14,9 @@ class _Signin2PageState extends State<Signin2Page> {
   bool _obscureText = true;
   IconData _iconVisible = Icons.visibility_off;
 
-  Color _gradientTop = Color(0xFF039be6);
-  Color _gradientBottom = Color(0xFF0299e2);
-  Color _mainColor = Color(0xFF0181cc);
+  Color _gradientTop = Color(0xFFff5902);
+  Color _gradientBottom = Color(0xFFffa602);
+  Color _mainColor = Color(0xFFff5500);
   Color _underlineColor = Color(0xFFCCCCCC);
 
   void _toggleObscureText() {
@@ -44,9 +45,9 @@ class _Signin2PageState extends State<Signin2Page> {
     return Scaffold(
         backgroundColor: Colors.white,
         body: AnnotatedRegion<SystemUiOverlayStyle>(
-          value: Platform.isIOS?SystemUiOverlayStyle.light:SystemUiOverlayStyle(
-              statusBarIconBrightness: Brightness.light
-          ),
+          value: Platform.isIOS
+              ? SystemUiOverlayStyle.light
+              : SystemUiOverlayStyle(statusBarIconBrightness: Brightness.light),
           child: Stack(
             children: <Widget>[
               // top blue background gradient
@@ -60,9 +61,11 @@ class _Signin2PageState extends State<Signin2Page> {
               ),
               // set your logo here
               Container(
-                  margin: EdgeInsets.fromLTRB(0, MediaQuery.of(context).size.height / 20, 0, 0),
+                  margin: EdgeInsets.fromLTRB(
+                      0, MediaQuery.of(context).size.height / 20, 0, 0),
                   alignment: Alignment.topCenter,
-                  child: Image.asset('assets/images/logo_dark.png', height: 120)),
+                  child:
+                      Image.asset('assets/images/logo_dark.png', height: 120)),
               ListView(
                 children: <Widget>[
                   // create form login
@@ -71,7 +74,8 @@ class _Signin2PageState extends State<Signin2Page> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     elevation: 5,
-                    margin: EdgeInsets.fromLTRB(32, MediaQuery.of(context).size.height / 3.5 - 72, 32, 0),
+                    margin: EdgeInsets.fromLTRB(32,
+                        MediaQuery.of(context).size.height / 3.5 - 72, 32, 0),
                     color: Colors.white,
                     child: Container(
                         margin: EdgeInsets.fromLTRB(24, 0, 24, 20),
@@ -96,12 +100,15 @@ class _Signin2PageState extends State<Signin2Page> {
                               keyboardType: TextInputType.emailAddress,
                               decoration: InputDecoration(
                                   focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.grey[600]!)),
+                                      borderSide:
+                                          BorderSide(color: Colors.grey[600]!)),
                                   enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: _underlineColor),
+                                    borderSide:
+                                        BorderSide(color: _underlineColor),
                                   ),
                                   labelText: 'Email',
-                                  labelStyle: TextStyle(color: Colors.grey[700])),
+                                  labelStyle:
+                                      TextStyle(color: Colors.grey[700])),
                             ),
                             SizedBox(
                               height: 20,
@@ -109,15 +116,18 @@ class _Signin2PageState extends State<Signin2Page> {
                             TextField(
                               obscureText: _obscureText,
                               decoration: InputDecoration(
-                                  focusedBorder: UnderlineInputBorder(
-                                      borderSide: BorderSide(color: Colors.grey[600]!)),
-                                  enabledBorder: UnderlineInputBorder(
-                                    borderSide: BorderSide(color: _underlineColor),
-                                  ),
-                                  labelText: 'Password',
-                                  labelStyle: TextStyle(color: Colors.grey[700]),
-                                  suffixIcon: IconButton(
-                                    icon: Icon(_iconVisible, color: Colors.grey[700], size: 20),
+                                focusedBorder: UnderlineInputBorder(
+                                    borderSide:
+                                        BorderSide(color: Colors.grey[600]!)),
+                                enabledBorder: UnderlineInputBorder(
+                                  borderSide:
+                                      BorderSide(color: _underlineColor),
+                                ),
+                                labelText: 'Password',
+                                labelStyle: TextStyle(color: Colors.grey[700]),
+                                suffixIcon: IconButton(
+                                    icon: Icon(_iconVisible,
+                                        color: Colors.grey[700], size: 20),
                                     onPressed: () {
                                       _toggleObscureText();
                                     }),
@@ -130,12 +140,13 @@ class _Signin2PageState extends State<Signin2Page> {
                               alignment: Alignment.centerRight,
                               child: GestureDetector(
                                 onTap: () {
-                                  Fluttertoast.showToast(msg: 'Click forgot password', toastLength: Toast.LENGTH_SHORT);
+                                  Fluttertoast.showToast(
+                                      msg: 'Click forgot password',
+                                      toastLength: Toast.LENGTH_SHORT);
                                 },
-                                child: Text('Forgot Password?',
-                                    style: TextStyle(
-                                        fontSize: 13
-                                    ),
+                                child: Text(
+                                  'Forgot Password?',
+                                  style: TextStyle(fontSize: 13),
                                 ),
                               ),
                             ),
@@ -146,30 +157,32 @@ class _Signin2PageState extends State<Signin2Page> {
                               width: double.maxFinite,
                               child: TextButton(
                                   style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.resolveWith<Color>(
-                                          (Set<MaterialState> states) => _mainColor,
+                                    backgroundColor: MaterialStateProperty
+                                        .resolveWith<Color>(
+                                      (Set<MaterialState> states) => _mainColor,
                                     ),
-                                    overlayColor: MaterialStateProperty.all(Colors.transparent),
+                                    overlayColor: MaterialStateProperty.all(
+                                        Colors.transparent),
                                     shape: MaterialStateProperty.all(
                                         RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(10),
-                                        )
-                                    ),
+                                      borderRadius: BorderRadius.circular(10),
+                                    )),
                                   ),
                                   onPressed: () {
-                                    Fluttertoast.showToast(msg: 'Click login', toastLength: Toast.LENGTH_SHORT);
+                                    Fluttertoast.showToast(
+                                        msg: 'Click login',
+                                        toastLength: Toast.LENGTH_SHORT);
                                   },
                                   child: Padding(
-                                    padding: const EdgeInsets.symmetric(vertical: 5),
+                                    padding:
+                                        const EdgeInsets.symmetric(vertical: 5),
                                     child: Text(
                                       'LOGIN',
                                       style: TextStyle(
-                                          fontSize: 16,
-                                          color: Colors.white),
+                                          fontSize: 16, color: Colors.white),
                                       textAlign: TextAlign.center,
                                     ),
-                                  )
-                              ),
+                                  )),
                             ),
                           ],
                         )),
@@ -184,13 +197,15 @@ class _Signin2PageState extends State<Signin2Page> {
                         Text('New User? '),
                         GestureDetector(
                           onTap: () {
-                            Fluttertoast.showToast(msg: 'Click signup', toastLength: Toast.LENGTH_SHORT);
+                            Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => Signup2Page()));
                           },
                           child: Text(
                             'Sign Up',
                             style: TextStyle(
-                                color: _mainColor,
-                                fontWeight: FontWeight.w700),
+                                color: _mainColor, fontWeight: FontWeight.w700),
                           ),
                         )
                       ],
@@ -203,7 +218,6 @@ class _Signin2PageState extends State<Signin2Page> {
               )
             ],
           ),
-        )
-    );
+        ));
   }
 }

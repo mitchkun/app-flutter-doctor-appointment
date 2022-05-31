@@ -8,6 +8,7 @@ import 'package:doctor_app/model/apps/food_delivery/restaurant_model.dart';
 import 'package:doctor_app/model/feature/banner_slider_model.dart';
 import 'package:doctor_app/model/screen/product_model.dart';
 import 'package:doctor_app/theme/colors.dart';
+import 'package:doctor_app/ui/apps/food_delivery/detail_restaurant.dart';
 import 'package:doctor_app/ui/apps/food_delivery/restaurant_list.dart';
 import 'package:doctor_app/ui/apps/food_delivery/reusable_widget.dart';
 import 'package:doctor_app/ui/reusable/cache_image_network.dart';
@@ -167,6 +168,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: appBgColor,
+      floatingActionButton: _reusableWidget.fabCart(context),
       // appBar:
       //_globalWidget.globalAppBar(),
       // backLayer: BackdropNavigationBackLayer(
@@ -321,62 +323,6 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildNearbyFood(boxImageSize) {
-    return Column(
-      children: [
-        Container(
-          padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Services', style: GlobalStyle.horizontalTitle),
-              GestureDetector(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              RestaurantListPage(title: 'Services')));
-                },
-                child: Text('View All',
-                    style: GlobalStyle.viewAll, textAlign: TextAlign.end),
-              )
-            ],
-          ),
-        ),
-
-        // Container(
-        //     margin: EdgeInsets.only(top: 8),
-        //     height: boxImageSize * GlobalStyle.cardHeightMultiplication,
-        //     child: GridView.builder(
-        //       padding: EdgeInsets.all(8),
-        //       itemCount: 4,
-        //       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        //         crossAxisCount: 3,
-        //         crossAxisSpacing: 8.0,
-        //         mainAxisSpacing: 8.0,
-        //       ),
-        //       itemBuilder: (BuildContext context, int index) {
-        //         return _reusableWidget.buildHorizontalListCard(
-        //             context, _nearbyFoodData[index]);
-        //       },
-        //     )),
-        Container(
-            margin: EdgeInsets.only(top: 8),
-            height: boxImageSize * GlobalStyle.cardHeightMultiplication,
-            child: ListView.builder(
-              padding: EdgeInsets.symmetric(horizontal: 12),
-              scrollDirection: Axis.horizontal,
-              itemCount: _nearbyFoodData.length,
-              itemBuilder: (BuildContext context, int index) {
-                return _reusableWidget.buildHorizontalListCard(
-                    context, _nearbyFoodData[index]);
-              },
-            )),
-      ],
-    );
-  }
-
   Widget _createAllProduct() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -442,9 +388,13 @@ class _HomePageState extends State<HomePage> {
         child: GestureDetector(
           behavior: HitTestBehavior.translucent,
           onTap: () {
-            Fluttertoast.showToast(
-                msg: 'Click ' + _nearbyFoodData[index].name,
-                toastLength: Toast.LENGTH_SHORT);
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => DetailRestaurantPage()));
+            // Fluttertoast.showToast(
+            //     msg: 'Click ' + _nearbyFoodData[index].name,
+            //     toastLength: Toast.LENGTH_SHORT);
           },
           child: Column(
             children: <Widget>[

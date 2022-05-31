@@ -4,8 +4,9 @@ Don't forget to add all images and sound used in this pages at the pubspec.yaml
  */
 
 import 'dart:async';
+import 'dart:convert';
 import 'package:universal_io/io.dart';
-
+import 'package:http/http.dart' as http;
 import 'package:doctor_app/config/constant.dart';
 import 'package:doctor_app/ui/home.dart';
 import 'package:flutter/material.dart';
@@ -28,7 +29,9 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
       });
       if (_second == 0) {
         _cancelFlashsaleTimer();
-        Navigator.of(context).pushAndRemoveUntil(MaterialPageRoute(builder: (context) => HomePage()), (Route<dynamic> route) => false);
+        Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => HomePage()),
+            (Route<dynamic> route) => false);
       }
     });
   }
@@ -44,14 +47,15 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
   void initState() {
     // set status bar color to transparent and navigation bottom color to black21
     SystemChrome.setSystemUIOverlayStyle(
-      Platform.isIOS?SystemUiOverlayStyle.light:SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        systemNavigationBarColor: BLACK21,
-        systemNavigationBarIconBrightness: Brightness.light
-      ),
+      Platform.isIOS
+          ? SystemUiOverlayStyle.light
+          : SystemUiOverlayStyle(
+              statusBarColor: Colors.transparent,
+              systemNavigationBarColor: BLACK21,
+              systemNavigationBarIconBrightness: Brightness.light),
     );
 
-    if(_second != 0){
+    if (_second != 0) {
       _startTimer();
     }
     super.initState();
@@ -67,16 +71,15 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: WillPopScope(
-          onWillPop: () {
-            return Future.value(false);
-          },
-          child: Container(
-            color: BLACK21,
-            child: Center(
-              child: Image.asset('assets/images/logo_dark.png', height: 200),
-            ),
-          ),
-        )
-    );
+      onWillPop: () {
+        return Future.value(false);
+      },
+      child: Container(
+        color: BLACK21,
+        child: Center(
+          child: Image.asset('assets/images/logo_dark.png', height: 200),
+        ),
+      ),
+    ));
   }
 }

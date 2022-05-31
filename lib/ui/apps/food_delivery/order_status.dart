@@ -4,6 +4,8 @@ import 'package:doctor_app/ui/apps/food_delivery/reusable_widget.dart';
 import 'package:doctor_app/ui/reusable/cache_image_network.dart';
 import 'package:flutter/material.dart';
 import 'package:timeline_tile/timeline_tile.dart';
+import 'dart:io';
+import 'package:webview_flutter/webview_flutter.dart';
 
 class OrderStatusPage extends StatefulWidget {
   @override
@@ -17,6 +19,7 @@ class _OrderStatusPageState extends State<OrderStatusPage> {
   @override
   void initState() {
     super.initState();
+    if (Platform.isAndroid) WebView.platform = AndroidWebView();
   }
 
   @override
@@ -27,123 +30,137 @@ class _OrderStatusPageState extends State<OrderStatusPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        iconTheme: IconThemeData(
-          color: GlobalStyle.appBarIconThemeColor,
+        backgroundColor: Colors.white,
+        appBar: AppBar(
+          iconTheme: IconThemeData(
+            color: GlobalStyle.appBarIconThemeColor,
+          ),
+          systemOverlayStyle: GlobalStyle.appBarSystemOverlayStyle,
+          centerTitle: true,
+          title: Text('GlobalOnePay', style: GlobalStyle.appBarTitle),
+          backgroundColor: GlobalStyle.appBarBackgroundColor,
+          bottom: _reusableWidget.bottomAppBar(),
         ),
-        systemOverlayStyle: GlobalStyle.appBarSystemOverlayStyle,
-        centerTitle: true,
-        title: Text('Order Status', style: GlobalStyle.appBarTitle),
-        backgroundColor: GlobalStyle.appBarBackgroundColor,
-        bottom: _reusableWidget.bottomAppBar(),
-      ),
-      body: ListView(
-        children: [
-          _buildEstimatedArrival(),
-          _reusableWidget.divider2(),
-          _buildOrderStatus(),
-          _reusableWidget.divider1(),
-          _buildDriverInformation(),
-          _reusableWidget.divider1(),
-          _reusableWidget.deliveryInformation(),
-          _reusableWidget.divider1(),
-          _buildOrderSummary(),
-          _reusableWidget.divider1(),
-          _buildTotalSummary()
-        ],
-      ),
-    );
+        body: WebView(
+          initialUrl:
+              'https://ppp-test.safecharge.com/ppp/purchase.do?currency=EUR&item_name_1=Test+Product&item_number_1=1&item_quantity_1=1&item_amount_1=50.00&numberofitems=1&encoding=utf-8&merchant_id=640817950595693192&merchant_site_id=148133&time_stamp=2018-05-15.02:35:21&version=4.0.0&user_token_id=ran100418_scobd%40mailinator.com&user_token=auto&total_amount=50.00&notify_url=https://sandbox.safecharge.com/lib/demo_process_request/response.php&theme_id=178113&checksum=66ce9f4ce1e5f47298e7e5e457d0b21ca8d6a668d549240929924054db6d1a21',
+        )
+        // ListView(
+        //   children: [
+        //     _buildEstimatedArrival(),
+        //     _reusableWidget.divider2(),
+        //     _buildOrderStatus(),
+        //     _reusableWidget.divider1(),
+        //     _buildDriverInformation(),
+        //     _reusableWidget.divider1(),
+        //     _reusableWidget.deliveryInformation(),
+        //     _reusableWidget.divider1(),
+        //     _buildOrderSummary(),
+        //     _reusableWidget.divider1(),
+        //     _buildTotalSummary()
+        //   ],
+        // ),
+        );
   }
 
-  Widget _buildEstimatedArrival(){
+  Widget _buildEstimatedArrival() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
-          child: Text('Estimated Arrival', style: TextStyle(
-              fontSize: 15,
-              color: Colors.black,
-              fontWeight: FontWeight.bold
-          ), maxLines: 1, overflow: TextOverflow.ellipsis,
+          child: Text(
+            'Estimated Arrival',
+            style: TextStyle(
+                fontSize: 15, color: Colors.black, fontWeight: FontWeight.bold),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
         ),
         Container(
           padding: EdgeInsets.fromLTRB(16, 8, 16, 0),
-          child: Text('18:00 - 18:25', style: TextStyle(
-              fontSize: 24,
-              color: Colors.black,
-              fontWeight: FontWeight.bold
-          ), maxLines: 1, overflow: TextOverflow.ellipsis,
+          child: Text(
+            '18:00 - 18:25',
+            style: TextStyle(
+                fontSize: 24, color: Colors.black, fontWeight: FontWeight.bold),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
         )
       ],
     );
   }
 
-  Widget _buildOrderStatus(){
+  Widget _buildOrderStatus() {
     return Container(
         margin: EdgeInsets.all(16),
         child: Column(
           children: [
-            _timelineTile(orderStatus: 'On the way', orderDescription: 'Driver is on the way to deliver your order', position: 'first'),
-            _timelineTile(orderStatus: 'At the restaurant', orderDescription: 'Driver is arrived at the restaurant'),
-            _timelineTile(orderStatus: 'Go to restaurant', orderDescription: 'Driver is going to restaurant'),
-            _timelineTile(orderStatus: 'Search driver', orderDescription: 'Search for driver'),
-            _timelineTile(orderStatus: 'Order placed', orderDescription: 'We have received your order', position: 'last'),
+            _timelineTile(
+                orderStatus: 'On the way',
+                orderDescription: 'Driver is on the way to deliver your order',
+                position: 'first'),
+            _timelineTile(
+                orderStatus: 'At the restaurant',
+                orderDescription: 'Driver is arrived at the restaurant'),
+            _timelineTile(
+                orderStatus: 'Go to restaurant',
+                orderDescription: 'Driver is going to restaurant'),
+            _timelineTile(
+                orderStatus: 'Search driver',
+                orderDescription: 'Search for driver'),
+            _timelineTile(
+                orderStatus: 'Order placed',
+                orderDescription: 'We have received your order',
+                position: 'last'),
           ],
-        )
-    );
+        ));
   }
 
-  Widget _timelineTile({required String orderStatus, required String orderDescription, String position = 'mid'}){
+  Widget _timelineTile(
+      {required String orderStatus,
+      required String orderDescription,
+      String position = 'mid'}) {
     return TimelineTile(
       indicatorStyle: IndicatorStyle(
           indicatorXY: 0,
           width: 16,
-          color: position=='first'?PRIMARY_COLOR:Colors.grey[400]!
-      ),
+          color: position == 'first' ? PRIMARY_COLOR : Colors.grey[400]!),
       beforeLineStyle: LineStyle(
-          color: position=='first'?PRIMARY_COLOR:Colors.grey[400]!,
-          thickness: 1.5
-      ),
-      isLast: position=='last'?true:false,
+          color: position == 'first' ? PRIMARY_COLOR : Colors.grey[400]!,
+          thickness: 1.5),
+      isLast: position == 'last' ? true : false,
       endChild: Container(
           margin: EdgeInsets.only(left: 32),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(orderStatus, style: TextStyle(
-                  fontWeight: FontWeight.bold, color: BLACK55
-              )),
+              Text(orderStatus,
+                  style:
+                      TextStyle(fontWeight: FontWeight.bold, color: BLACK55)),
               SizedBox(
                 height: 4,
               ),
-              Text(orderDescription, style: TextStyle(
-                  color: BLACK77
-              )),
-              position!='last'
-                  ? SizedBox(height: 12)
-                  : SizedBox.shrink()
+              Text(orderDescription, style: TextStyle(color: BLACK77)),
+              position != 'last' ? SizedBox(height: 12) : SizedBox.shrink()
             ],
-          )
-      ),
+          )),
     );
   }
 
-  Widget _buildDriverInformation(){
-    double imageSize = MediaQuery.of(context).size.width/7;
+  Widget _buildDriverInformation() {
+    double imageSize = MediaQuery.of(context).size.width / 7;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           padding: EdgeInsets.fromLTRB(16, 16, 16, 0),
-          child: Text('Driver Information', style: TextStyle(
-              fontSize: 15,
-              color: Colors.black,
-              fontWeight: FontWeight.bold
-          ), maxLines: 1, overflow: TextOverflow.ellipsis,
+          child: Text(
+            'Driver Information',
+            style: TextStyle(
+                fontSize: 15, color: Colors.black, fontWeight: FontWeight.bold),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
           ),
         ),
         Container(
@@ -151,24 +168,29 @@ class _OrderStatusPageState extends State<OrderStatusPage> {
           child: Row(
             children: [
               ClipOval(
-                  child: buildCacheNetworkImage(width: imageSize, height: imageSize, url: GLOBAL_URL+'/assets/images/user/avatar.png')
-              ),
+                  child: buildCacheNetworkImage(
+                      width: imageSize,
+                      height: imageSize,
+                      url: GLOBAL_URL + '/assets/images/user/avatar.png')),
               SizedBox(width: 16),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Robert Steven', style: TextStyle(
-                        fontSize: 15,
-                        color: Colors.black,
-                        fontWeight: FontWeight.bold
-                    ), maxLines: 1, overflow: TextOverflow.ellipsis,
+                    Text(
+                      'Robert Steven',
+                      style: TextStyle(
+                          fontSize: 15,
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
                     ),
                     SizedBox(height: 4),
-                    Text('HONDA CBR - B 4244 UGC', style: TextStyle(
-                        fontSize: 12,
-                        color: BLACK77
-                    ), maxLines: 2, overflow: TextOverflow.ellipsis)
+                    Text('HONDA CBR - B 4244 UGC',
+                        style: TextStyle(fontSize: 12, color: BLACK77),
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis)
                   ],
                 ),
               )
@@ -179,7 +201,7 @@ class _OrderStatusPageState extends State<OrderStatusPage> {
     );
   }
 
-  Widget _buildOrderSummary(){
+  Widget _buildOrderSummary() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -204,20 +226,32 @@ class _OrderStatusPageState extends State<OrderStatusPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Flexible(
-                                child:Text('Hainam Chicken Rice', style: GlobalStyle.orderFoodTitle, maxLines: 2, overflow: TextOverflow.ellipsis)
-                            ),
+                                child: Text('Hainam Chicken Rice',
+                                    style: GlobalStyle.orderFoodTitle,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis)),
                             SizedBox(width: 8),
                             Text('\$4.5', style: GlobalStyle.orderPrice)
                           ],
                         ),
                         SizedBox(height: 4),
-                        Text('Regular', style: GlobalStyle.orderOptions, maxLines: 1, overflow: TextOverflow.ellipsis),
+                        Text('Regular',
+                            style: GlobalStyle.orderOptions,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis),
                         SizedBox(height: 4),
-                        Text('Hot', style: GlobalStyle.orderOptions, maxLines: 1, overflow: TextOverflow.ellipsis),
+                        Text('Hot',
+                            style: GlobalStyle.orderOptions,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis),
                         SizedBox(height: 4),
-                        Text('Chicken Breast, Chicken Thighs', style: GlobalStyle.orderOptions, maxLines: 1, overflow: TextOverflow.ellipsis),
+                        Text('Chicken Breast, Chicken Thighs',
+                            style: GlobalStyle.orderOptions,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis),
                         SizedBox(height: 8),
-                        Text('No soy sauce please', style: GlobalStyle.orderNotes)
+                        Text('No soy sauce please',
+                            style: GlobalStyle.orderNotes)
                       ],
                     ),
                   )
@@ -238,18 +272,29 @@ class _OrderStatusPageState extends State<OrderStatusPage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Flexible(
-                                child:Text('Hainam Chicken Rice', style: GlobalStyle.orderFoodTitle, maxLines: 2, overflow: TextOverflow.ellipsis)
-                            ),
+                                child: Text('Hainam Chicken Rice',
+                                    style: GlobalStyle.orderFoodTitle,
+                                    maxLines: 2,
+                                    overflow: TextOverflow.ellipsis)),
                             SizedBox(width: 8),
                             Text('\$5.5', style: GlobalStyle.orderPrice)
                           ],
                         ),
                         SizedBox(height: 4),
-                        Text('Large', style: GlobalStyle.orderOptions, maxLines: 1, overflow: TextOverflow.ellipsis),
+                        Text('Large',
+                            style: GlobalStyle.orderOptions,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis),
                         SizedBox(height: 4),
-                        Text('Extra Hot', style: GlobalStyle.orderOptions, maxLines: 1, overflow: TextOverflow.ellipsis),
+                        Text('Extra Hot',
+                            style: GlobalStyle.orderOptions,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis),
                         SizedBox(height: 4),
-                        Text('Chicken Wings, Chicken Thighs', style: GlobalStyle.orderOptions, maxLines: 1, overflow: TextOverflow.ellipsis),
+                        Text('Chicken Wings, Chicken Thighs',
+                            style: GlobalStyle.orderOptions,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis),
                       ],
                     ),
                   )
@@ -262,7 +307,7 @@ class _OrderStatusPageState extends State<OrderStatusPage> {
     );
   }
 
-  Widget _buildTotalSummary(){
+  Widget _buildTotalSummary() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -289,7 +334,8 @@ class _OrderStatusPageState extends State<OrderStatusPage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text('Promo (CHICKENLOVERS)', style: GlobalStyle.orderTotalSubtitle),
+                  Text('Promo (CHICKENLOVERS)',
+                      style: GlobalStyle.orderTotalSubtitle),
                   Text('-\$1', style: GlobalStyle.orderTotalSubtitle),
                 ],
               ),
