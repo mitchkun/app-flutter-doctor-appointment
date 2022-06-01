@@ -83,7 +83,7 @@ dependencies:
   material_design_icons_flutter: ^5.0.6595
   random_string: ^2.3.1
   page_transition: ^2.0.4
-  horizontal_calendar_widget: ^1.0.2
+  horizontal_calendar_widget: ^1.0.1
   animated_splash_screen: ^1.1.0-nullsafety.0
   lottie: ^1.2.1
   webview_flutter: ^2.8.0
