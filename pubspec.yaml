@@ -62,7 +62,7 @@ dependencies:
   sliding_up_panel: ^2.0.0+1
   flutter_typeahead: ^3.2.4
   backdrop: ^0.7.1
-  flutter_barcode_scanner: ^2.0.0
+  # flutter_barcode_scanner: ^2.0.0
   battery_plus: ^2.0.2
   convex_bottom_bar: ^3.0.0
   device_info_plus: ^3.2.1
