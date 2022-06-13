@@ -1,15 +1,15 @@
-class RestaurantModel {
+class ServicesModel {
   late int id;
   late String name;
   late String duration;
   late String price;
   late String currency;
-  late double description;
-  late double availabilitiesType;
+  late String description;
+  late String availabilitiesType;
   late String promo;
   late String location;
 
-  RestaurantModel(
+  ServicesModel(
       {required this.id,
       required this.name,
       required this.duration,

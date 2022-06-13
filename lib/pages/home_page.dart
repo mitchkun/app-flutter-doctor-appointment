@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:math';
+
 import 'package:backdrop/backdrop.dart';
 import 'package:badges/badges.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -19,6 +22,7 @@ import 'package:doctor_app/widgets/textbox.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:nb_utils/nb_utils.dart';
+import 'package:http/http.dart' as http;
 
 List<ProductModel> _trendingData = [
   ProductModel(
@@ -47,80 +51,80 @@ List<ProductModel> _trendingData = [
   )
 ];
 
-List<RestaurantModel> _nearbyFoodData = [
-  RestaurantModel(
-      id: 1,
-      name: "Rapid-Action Coaching",
-      tag: "Chicken, Rice",
-      image: "assets/images/RapidActionCoaching.jpg",
-      rating: 4.9,
-      distance: 0.4,
-      promo: '500/hr',
-      location: "43-14271 60 Avenue"),
-  RestaurantModel(
-      id: 2,
-      name: "Personal Impact Coaching",
-      tag: "Beef, Yakiniku, Japanese Food",
-      image: "assets/images/PersonalImpactCoaching.jpg",
-      rating: 5,
-      distance: 0.6,
-      promo: '500/hr',
-      location: "43-14271 60 Avenue"),
-  RestaurantModel(
-      id: 3,
-      name: "Executive Leadership Coaching",
-      tag: "Healthy Food, Salad",
-      image: "assets/images/ExecutiveLeadershipCoaching.jpg",
-      rating: 4.3,
-      distance: 0.7,
-      promo: '500/hr',
-      location: "43-14271 60 Avenue"),
-  RestaurantModel(
-      id: 4,
-      name: "Executive Leadership Team Coaching",
-      tag: "Hot, Fresh, Steam",
-      image: "assets/images/ExecutiveLeadershipteamCoaching.jpg",
-      rating: 4.9,
-      distance: 0.7,
-      promo: '500/hr',
-      location: "Online"),
-  RestaurantModel(
-      id: 5,
-      name: "Transition Coaching",
-      tag: "Penne, Western Food",
-      image: "assets/images/TransitionCoaching.jpg",
-      rating: 4.6,
-      distance: 0.9,
-      promo: '500/hr',
-      location: "Online"),
-  // RestaurantModel(
-  //     id: 6,
-  //     name: "Transition Coaching",
-  //     tag: "Bread",
-  //     image: GLOBAL_URL + "/assets/images/apps/food_delivery/food/6.jpg",
-  //     rating: 4.8,
-  //     distance: 0.9,
-  //     promo: '',
-  //     location: "Mapple Street"),
-  // RestaurantModel(
-  //     id: 7,
-  //     name: "Awesome Health",
-  //     tag: "Salad, Healthy Food, Fresh",
-  //     image: GLOBAL_URL + "/assets/images/apps/food_delivery/food/7.jpg",
-  //     rating: 4.9,
-  //     distance: 1.1,
-  //     promo: '10% Off',
-  //     location: "Fenimore Street"),
-  // RestaurantModel(
-  //     id: 8,
-  //     name: "Chicken Specialties",
-  //     tag: "Chicken, Rice, Teriyaki",
-  //     image: GLOBAL_URL + "/assets/images/apps/food_delivery/food/8.jpg",
-  //     rating: 4.7,
-  //     distance: 3.9,
-  //     promo: '10% Off',
-  //     location: "Liberty Avenue"),
-];
+// List<RestaurantModel> _nearbyFoodData = [
+//   RestaurantModel(
+//       id: 1,
+//       name: "Rapid-Action Coaching",
+//       tag: "Chicken, Rice",
+//       image: "assets/images/RapidActionCoaching.jpg",
+//       rating: 4.9,
+//       distance: 0.4,
+//       promo: '500/hr',
+//       location: "43-14271 60 Avenue"),
+//   RestaurantModel(
+//       id: 2,
+//       name: "Personal Impact Coaching",
+//       tag: "Beef, Yakiniku, Japanese Food",
+//       image: "assets/images/PersonalImpactCoaching.jpg",
+//       rating: 5,
+//       distance: 0.6,
+//       promo: '500/hr',
+//       location: "43-14271 60 Avenue"),
+//   RestaurantModel(
+//       id: 3,
+//       name: "Executive Leadership Coaching",
+//       tag: "Healthy Food, Salad",
+//       image: "assets/images/ExecutiveLeadershipCoaching.jpg",
+//       rating: 4.3,
+//       distance: 0.7,
+//       promo: '500/hr',
+//       location: "43-14271 60 Avenue"),
+//   RestaurantModel(
+//       id: 4,
+//       name: "Executive Leadership Team Coaching",
+//       tag: "Hot, Fresh, Steam",
+//       image: "assets/images/ExecutiveLeadershipteamCoaching.jpg",
+//       rating: 4.9,
+//       distance: 0.7,
+//       promo: '500/hr',
+//       location: "Online"),
+//   RestaurantModel(
+//       id: 5,
+//       name: "Transition Coaching",
+//       tag: "Penne, Western Food",
+//       image: "assets/images/TransitionCoaching.jpg",
+//       rating: 4.6,
+//       distance: 0.9,
+//       promo: '500/hr',
+//       location: "Online"),
+//   // RestaurantModel(
+//   //     id: 6,
+//   //     name: "Transition Coaching",
+//   //     tag: "Bread",
+//   //     image: GLOBAL_URL + "/assets/images/apps/food_delivery/food/6.jpg",
+//   //     rating: 4.8,
+//   //     distance: 0.9,
+//   //     promo: '',
+//   //     location: "Mapple Street"),
+//   // RestaurantModel(
+//   //     id: 7,
+//   //     name: "Awesome Health",
+//   //     tag: "Salad, Healthy Food, Fresh",
+//   //     image: GLOBAL_URL + "/assets/images/apps/food_delivery/food/7.jpg",
+//   //     rating: 4.9,
+//   //     distance: 1.1,
+//   //     promo: '10% Off',
+//   //     location: "Fenimore Street"),
+//   // RestaurantModel(
+//   //     id: 8,
+//   //     name: "Chicken Specialties",
+//   //     tag: "Chicken, Rice, Teriyaki",
+//   //     image: GLOBAL_URL + "/assets/images/apps/food_delivery/food/8.jpg",
+//   //     rating: 4.7,
+//   //     distance: 3.9,
+//   //     promo: '10% Off',
+//   //     location: "Liberty Avenue"),
+// ];
 final _globalWidget = GlobalWidget();
 
 class HomePage extends StatefulWidget {
@@ -138,6 +142,7 @@ class _HomePageState extends State<HomePage> {
   Color _color3 = Color(0xff777777);
   Color _color1 = Color(0xff777777);
   Color _color2 = Color(0xFF515151);
+  List<RestaurantModel> _nearbyFoodData = [];
 
   int _currentImageSlider = 0;
 
@@ -162,6 +167,35 @@ class _HomePageState extends State<HomePage> {
     // bannerData.add(BannerSliderModel(
     //     id: 3, image: GLOBAL_URL + '/assets/images/home_banner/5.jpg'));
     super.initState();
+  }
+
+  Future<List<RestaurantModel>> _getServices() async {
+    List<RestaurantModel> services = [];
+    List<dynamic> data = [];
+
+    http.Response response = await http.get(Uri.parse(
+        'https://booking.2micoaching.com/index.php/api/v1/services?page=1&length=4'));
+
+    if (response.statusCode == 200) {
+      Map<String, dynamic> map = jsonDecode(response.body);
+      data = map['data'];
+      for (int i = 0; i < data.length; i++) {
+        services.add(new RestaurantModel(
+            id: data[i]['id'],
+            name: data[i]['name'],
+            duration: data[i]['duration'],
+            price: data[i]['price'],
+            currency: data[i]['currency'],
+            description: data[i]['description'],
+            availabilitiesType: data[i]['availabilitiesType'],
+            location: data[i]['location'],
+            promo: data[i]['categoryId']));
+      }
+      // events.map((e) => Event.fromJson(jsonDecode(e.toString()))).toList();
+    } else {
+      print(response.reasonPhrase);
+    }
+    return services;
   }
 
   @override
@@ -261,6 +295,18 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  String randomAsset() {
+    var random = Random();
+    final colorList = [
+      "assets/images/RapidActionCoaching.jpg",
+      "assets/images/PersonalImpactCoaching.jpg",
+      "assets/images/ExecutiveLeadershipCoaching.jpg",
+      "assets/images/ExecutiveLeadershipteamCoaching.jpg"
+    ];
+    var color = colorList[random.nextInt(colorList.length)];
+    return color;
+  }
+
   Widget _buildTrendingProductCard(index) {
     return GestureDetector(
       onTap: () {
@@ -281,7 +327,7 @@ class _HomePageState extends State<HomePage> {
                       topLeft: Radius.circular(10),
                       bottomLeft: Radius.circular(10)),
                   child: new Image.asset(
-                    _nearbyFoodData[index].image,
+                    randomAsset(),
                     width: (MediaQuery.of(context).size.width / 2) * (1.6 / 4) -
                         12 -
                         1,
@@ -403,7 +449,7 @@ class _HomePageState extends State<HomePage> {
                       topLeft: Radius.circular(10),
                       topRight: Radius.circular(10)),
                   child: new Image.asset(
-                    _nearbyFoodData[index].image,
+                    randomAsset(),
                     width: boxImageSize,
                     height: boxImageSize,
                   )
@@ -454,8 +500,7 @@ class _HomePageState extends State<HomePage> {
                       margin: EdgeInsets.only(top: 5),
                       child: Row(
                         children: [
-                          _globalWidget.createRatingBar(
-                              rating: _nearbyFoodData[index].rating, size: 12),
+                          _globalWidget.createRatingBar(rating: 3, size: 12),
                           Text('(' + _nearbyFoodData[index].location + ')',
                               style: TextStyle(fontSize: 11, color: SOFT_GREY))
                         ],

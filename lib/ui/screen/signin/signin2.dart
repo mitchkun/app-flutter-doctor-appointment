@@ -1,6 +1,6 @@
 import 'package:doctor_app/ui/screen/signup/signup2.dart';
 import 'package:universal_io/io.dart';
-
+import 'package:doctor_app/pages/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -169,9 +169,10 @@ class _Signin2PageState extends State<Signin2Page> {
                                     )),
                                   ),
                                   onPressed: () {
-                                    Fluttertoast.showToast(
-                                        msg: 'Click login',
-                                        toastLength: Toast.LENGTH_SHORT);
+                                    Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Home()));
                                   },
                                   child: Padding(
                                     padding:

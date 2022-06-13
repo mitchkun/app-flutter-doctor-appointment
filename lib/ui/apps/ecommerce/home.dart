@@ -10,7 +10,8 @@ class HomePage extends StatefulWidget {
   _HomePageState createState() => _HomePageState();
 }
 
-class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin {
+class _HomePageState extends State<HomePage>
+    with SingleTickerProviderStateMixin {
   late PageController _pageController;
   int _currentIndex = 0;
 
@@ -31,8 +32,7 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
   }
 
   void _handleTabSelection() {
-    setState(() {
-    });
+    setState(() {});
   }
 
   @override
@@ -65,49 +65,38 @@ class _HomePageState extends State<HomePage> with SingleTickerProviderStateMixin
         iconSize: 28,
         items: [
           BottomNavigationBarItem(
-            // ignore: deprecated_member_use
-              title:Text('Home', style: TextStyle(
-                  color: _currentIndex == 0 ? PRIMARY_COLOR : CHARCOAL,
-                  fontWeight: FontWeight.bold
-              )),
-              icon: Icon(
-                  Icons.home,
-                  color: _currentIndex == 0 ? PRIMARY_COLOR : CHARCOAL
-              )
-          ),
+              // ignore: deprecated_member_use
+              label: 'Home',
+              // style: TextStyle(
+              //     color: _currentIndex == 0 ? PRIMARY_COLOR : CHARCOAL,
+              //     fontWeight: FontWeight.bold)),
+              icon: Icon(Icons.home,
+                  color: _currentIndex == 0 ? PRIMARY_COLOR : CHARCOAL)),
           BottomNavigationBarItem(
-            // ignore: deprecated_member_use
-              title:Text('Wishlist', style: TextStyle(
-                  color: _currentIndex == 1 ? ASSENT_COLOR : CHARCOAL,
-                  fontWeight: FontWeight.bold
-              )),
-              icon: Icon(
-                  Icons.favorite,
-                  color: _currentIndex == 1 ? ASSENT_COLOR : CHARCOAL
-              )
-          ),
+              // ignore: deprecated_member_use
+              label: 'Wishlist',
+              // style: TextStyle(
+              //     color: _currentIndex == 1 ? ASSENT_COLOR : CHARCOAL,
+              //     fontWeight: FontWeight.bold)),
+              icon: Icon(Icons.favorite,
+                  color: _currentIndex == 1 ? ASSENT_COLOR : CHARCOAL)),
           BottomNavigationBarItem(
-            // ignore: deprecated_member_use
-              title:Text('Cart', style: TextStyle(
-                  color: _currentIndex == 2 ? PRIMARY_COLOR : CHARCOAL,
-                  fontWeight: FontWeight.bold
-              )),
-              icon: Icon(
-                  Icons.shopping_cart,
-                  color: _currentIndex == 2 ? PRIMARY_COLOR : CHARCOAL
-              )
-          ),
+              // ignore: deprecated_member_use
+              label: 'Cart',
+              // Text('Cart', style: TextStyle(
+              //     color: _currentIndex == 2 ? PRIMARY_COLOR : CHARCOAL,
+              //     fontWeight: FontWeight.bold
+              // )),
+              icon: Icon(Icons.shopping_cart,
+                  color: _currentIndex == 2 ? PRIMARY_COLOR : CHARCOAL)),
           BottomNavigationBarItem(
-            // ignore: deprecated_member_use
-              title:Text('Account', style: TextStyle(
-                  color: _currentIndex == 3 ? PRIMARY_COLOR : CHARCOAL,
-                  fontWeight: FontWeight.bold
-              )),
-              icon: Icon(
-                  Icons.person_outline,
-                  color: _currentIndex == 3 ? PRIMARY_COLOR : CHARCOAL
-              )
-          ),
+              // ignore: deprecated_member_use
+              label: 'Account',
+              // style: TextStyle(
+              //     color: _currentIndex == 3 ? PRIMARY_COLOR : CHARCOAL,
+              //     fontWeight: FontWeight.bold)),
+              icon: Icon(Icons.person_outline,
+                  color: _currentIndex == 3 ? PRIMARY_COLOR : CHARCOAL)),
         ],
       ),
     );
