@@ -166,10 +166,10 @@ class _CartPageState extends State<CartPage> {
                   Text('Order Summary', style: GlobalStyle.orderSummary),
                   GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => DetailRestaurantPage()));
+                      // Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //         builder: (context) => DetailRestaurantPage()));
                     },
                     child: Text('Add items', style: GlobalStyle.orderAction),
                   ),
@@ -211,11 +211,11 @@ class _CartPageState extends State<CartPage> {
                         SizedBox(height: 8),
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        DetailRestaurantPage()));
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) =>
+                            //             DetailRestaurantPage()));
                           },
                           child: Text('Edit', style: GlobalStyle.orderAction),
                         ),
@@ -260,11 +260,11 @@ class _CartPageState extends State<CartPage> {
                         SizedBox(height: 8),
                         GestureDetector(
                           onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        DetailRestaurantPage()));
+                            // Navigator.push(
+                            //     context,
+                            //     MaterialPageRoute(
+                            //         builder: (context) =>
+                            //             DetailRestaurantPage()));
                           },
                           child: Text('Edit', style: GlobalStyle.orderAction),
                         ),

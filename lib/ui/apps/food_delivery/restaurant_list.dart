@@ -1,11 +1,15 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:doctor_app/config/apps/food_delivery/constant.dart';
 import 'package:doctor_app/config/apps/food_delivery/global_style.dart';
+import 'package:doctor_app/model/apps/food_delivery/services_model.dart';
 import 'package:doctor_app/ui/apps/food_delivery/reusable_widget.dart';
 import 'package:doctor_app/model/apps/food_delivery/restaurant_model.dart';
 import 'package:doctor_app/ui/reusable/shimmer_loading.dart';
+import 'package:doctor_app/utils.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class RestaurantListPage extends StatefulWidget {
   final String title;
@@ -25,11 +29,42 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
   bool _loading = true;
   Timer? _timerDummy;
 
-  List<RestaurantModel> _restaurantData = [];
+  List<ServicesModel> _restaurantData = [];
+  Future<List<ServicesModel>> _getServices() async {
+    List<ServicesModel> services = [];
+    List<dynamic> data = [];
+
+    http.Response response = await http.get(
+        Uri.parse(apiServiceUrlGlobal + '?page=1&length=10'),
+        headers: {'Authorization': basicAuth});
+
+    if (response.statusCode == 200) {
+      data = jsonDecode(response.body);
+      print(data.length);
+      for (int i = 0; i < data.length; i++) {
+        services.add(new ServicesModel(
+            id: data[i]['id'],
+            name: data[i]['name'],
+            duration: data[i]['duration'],
+            price: data[i]['price'],
+            currency: data[i]['currency'],
+            description: data[i]['description'],
+            availabilitiesType: data[i]['availabilitiesType'],
+            location: data[i]['location']));
+      }
+      // print(response.body);
+    } else {
+      print(response.reasonPhrase);
+    }
+    return services;
+  }
 
   @override
   void initState() {
-    _getData();
+    _getServices().then((value) => setState(() {
+          _restaurantData = value;
+          _loading = false;
+        }));
 
     super.initState();
   }
@@ -40,68 +75,22 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
     super.dispose();
   }
 
-  void _getData() {
-    // this timer function is just for demo, so after 1 second, the shimmer loading will disappear and show the content
-    _timerDummy = Timer(Duration(seconds: 1), () {
-      setState(() {
-        _loading = false;
-      });
-    });
+  // Future<List<ServicesModel>> _getData() async {
+  //   // this timer function is just for demo, so after 1 second, the shimmer loading will disappear and show the content
+  //   // _timerDummy = Timer(Duration(seconds: 1), () {
+  //   // setState(() {
+  //   //   _loading = false;
+  //   // });
+  //   // });
 
-    /*
-    Image Information
-    width = 800px
-    height = 600px
-    ratio width height = 4:3
-     */
-    _restaurantData = [
-      RestaurantModel(
-          id: 1,
-          name: "Rapid-Action Coaching",
-          tag: "Chicken, Rice",
-          image: "https://2micoaching.com/wp-content/uploads/2021/12/1.jpg",
-          rating: 4.9,
-          distance: 0.4,
-          promo: '500/hr',
-          location: "43-14271 60 Avenue"),
-      RestaurantModel(
-          id: 2,
-          name: "Personal Impact Coaching",
-          tag: "Beef, Yakiniku, Japanese Food",
-          image: "https://2micoaching.com/wp-content/uploads/2021/12/1.jpg",
-          rating: 5,
-          distance: 0.6,
-          promo: '500/hr',
-          location: "43-14271 60 Avenue"),
-      RestaurantModel(
-          id: 3,
-          name: "Executive Leadership Coaching",
-          tag: "Healthy Food, Salad",
-          image: "https://2micoaching.com/wp-content/uploads/2021/12/1.jpg",
-          rating: 4.3,
-          distance: 0.7,
-          promo: '500/hr',
-          location: "43-14271 60 Avenue"),
-      RestaurantModel(
-          id: 4,
-          name: "Executive Leadership Team Coaching",
-          tag: "Hot, Fresh, Steam",
-          image: "https://2micoaching.com/wp-content/uploads/2021/12/1.jpg",
-          rating: 4.9,
-          distance: 0.7,
-          promo: '500/hr',
-          location: "Online"),
-      RestaurantModel(
-          id: 5,
-          name: "Transition Coaching",
-          tag: "Penne, Western Food",
-          image: "https://2micoaching.com/wp-content/uploads/2021/12/1.jpg",
-          rating: 4.6,
-          distance: 0.9,
-          promo: '500/hr',
-          location: "Online"),
-    ];
-  }
+  //   /*
+  //   Image Information
+  //   width = 800px
+  //   height = 600px
+  //   ratio width height = 4:3
+  //    */
+  //   return await _getServices();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -139,7 +128,7 @@ class _RestaurantListPageState extends State<RestaurantListPage> {
     setState(() {
       _restaurantData.clear();
       _loading = true;
-      _getData();
+      _getServices().then((value) => _restaurantData = value);
     });
   }
 }

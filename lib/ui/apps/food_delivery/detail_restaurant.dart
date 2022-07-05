@@ -1,6 +1,7 @@
 import 'package:doctor_app/config/apps/food_delivery/constant.dart';
 import 'package:doctor_app/config/apps/food_delivery/global_style.dart';
 import 'package:doctor_app/constant/constant.dart';
+import 'package:doctor_app/model/apps/food_delivery/services_model.dart';
 import 'package:doctor_app/pages/home.dart';
 import 'package:doctor_app/ui/apps/food_delivery/cart.dart';
 import 'package:doctor_app/ui/apps/food_delivery/coupon.dart';
@@ -15,6 +16,9 @@ import 'package:horizontal_calendar_widget/date_widget.dart';
 import 'package:horizontal_calendar_widget/horizontal_calendar.dart';
 
 class DetailRestaurantPage extends StatefulWidget {
+  final ServicesModel service;
+  const DetailRestaurantPage({Key? key, required this.service})
+      : super(key: key);
   @override
   _DetailRestaurantPageState createState() => _DetailRestaurantPageState();
 }
@@ -496,7 +500,7 @@ class _DetailRestaurantPageState extends State<DetailRestaurantPage> {
                     ),
                     systemOverlayStyle: GlobalStyle.appBarSystemOverlayStyle,
                     centerTitle: true,
-                    title: Text('2Mi Coaching Service - Rapid Action Coaching',
+                    title: Text('2Mi Coaching Service',
                         style: GlobalStyle.appBarTitle),
                     backgroundColor: GlobalStyle.appBarBackgroundColor,
                   ),
@@ -529,7 +533,7 @@ class _DetailRestaurantPageState extends State<DetailRestaurantPage> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
                     Text(
-                      "You are about to book Rapid Action Coaching Session for \n $selectedTime on $selectedDate ",
+                      "You are about to book ${widget.service.name} Session for \n $selectedTime on $selectedDate ",
                       style: blackHeadingTextStyle,
                       textAlign: TextAlign.center,
                     ),
@@ -790,7 +794,7 @@ class _DetailRestaurantPageState extends State<DetailRestaurantPage> {
         ),
         Container(
           margin: EdgeInsets.symmetric(horizontal: 16),
-          child: Text('Rapid Action Coaching - \$500/hr',
+          child: Text(widget.service.name,
               style: GlobalStyle.restaurantTitle,
               maxLines: 2,
               overflow: TextOverflow.ellipsis),

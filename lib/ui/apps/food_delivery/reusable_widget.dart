@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:doctor_app/config/apps/food_delivery/constant.dart';
 import 'package:doctor_app/config/apps/food_delivery/global_style.dart';
 import 'package:doctor_app/ui/apps/food_delivery/cart.dart';
@@ -97,7 +99,9 @@ class ReusableWidget {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => DetailRestaurantPage()));
+                    builder: (context) => DetailRestaurantPage(
+                          service: data[0],
+                        )));
           },
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -160,6 +164,18 @@ class ReusableWidget {
     );
   }
 
+  String randomAsset() {
+    var random = Random();
+    final colorList = [
+      "assets/images/RapidActionCoaching.jpg",
+      "assets/images/PersonalImpactCoaching.jpg",
+      "assets/images/ExecutiveLeadershipCoaching.jpg",
+      "assets/images/ExecutiveLeadershipteamCoaching.jpg"
+    ];
+    var color = colorList[random.nextInt(colorList.length)];
+    return color;
+  }
+
   Widget buildRestaurantList(context, index, data) {
     final double boxImageSize = (MediaQuery.of(context).size.width / 4);
     return Column(
@@ -170,7 +186,8 @@ class ReusableWidget {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => DetailRestaurantPage()));
+                    builder: (context) =>
+                        DetailRestaurantPage(service: data[index])));
           },
           child: Container(
             margin: EdgeInsets.fromLTRB(16, 14, 16, 14),
@@ -180,10 +197,16 @@ class ReusableWidget {
               children: <Widget>[
                 ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(4)),
-                    child: buildCacheNetworkImage(
-                        width: boxImageSize,
-                        height: boxImageSize,
-                        url: data[index].image)),
+                    child: Image.asset(
+                      randomAsset(),
+                      width: boxImageSize,
+                      height: boxImageSize,
+                    )
+                    // buildCacheNetworkImage(
+                    //     width: boxImageSize,
+                    //     height: boxImageSize,
+                    //     url: data[index].image)
+                    ),
                 SizedBox(
                   width: 10,
                 ),
@@ -199,7 +222,7 @@ class ReusableWidget {
                       ),
                       SizedBox(height: 6),
                       Text(
-                        data[index].tag,
+                        data[index].price.toString(),
                         style: GlobalStyle.textTag,
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -209,34 +232,34 @@ class ReusableWidget {
                         children: [
                           Icon(Icons.star, color: Colors.orange, size: 15),
                           SizedBox(width: 2),
-                          Text(data[index].rating.toString(),
+                          Text(data[index].price.toString(),
                               style: GlobalStyle.textRatingDistances),
                           SizedBox(width: 6),
                           Icon(Icons.location_pin,
                               color: ASSENT_COLOR, size: 15),
                           SizedBox(width: 2),
-                          Text(data[index].distance.toString() + ' miles',
+                          Text(data[index].location,
                               style: GlobalStyle.textRatingDistances),
                         ],
                       ),
                       SizedBox(height: 6),
-                      data[index].promo != ''
-                          ? Row(
-                              children: [
-                                Icon(Icons.local_offer_outlined,
-                                    color: ASSENT_COLOR, size: 16),
-                                SizedBox(width: 4),
-                                Flexible(
-                                  child: Text(
-                                    data[index].promo,
-                                    style: GlobalStyle.textPromo,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              ],
-                            )
-                          : SizedBox.shrink(),
+                      // data[index].promo != ''
+                      //     ? Row(
+                      //         children: [
+                      //           Icon(Icons.local_offer_outlined,
+                      //               color: ASSENT_COLOR, size: 16),
+                      //           SizedBox(width: 4),
+                      //           Flexible(
+                      //             child: Text(
+                      //               data[index].promo,
+                      //               style: GlobalStyle.textPromo,
+                      //               maxLines: 1,
+                      //               overflow: TextOverflow.ellipsis,
+                      //             ),
+                      //           ),
+                      //         ],
+                      //       )
+                      //     : SizedBox.shrink(),
                     ],
                   ),
                 )
@@ -264,7 +287,9 @@ class ReusableWidget {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => DetailRestaurantPage()));
+                    builder: (context) => DetailRestaurantPage(
+                          service: data[index],
+                        )));
             Navigator.push(context,
                 MaterialPageRoute(builder: (context) => DetailFoodPage()));
           },

@@ -8,6 +8,7 @@ import 'package:doctor_app/config/apps/food_delivery/constant.dart';
 import 'package:doctor_app/config/apps/food_delivery/global_style.dart';
 import 'package:doctor_app/data/json.dart';
 import 'package:doctor_app/model/apps/food_delivery/restaurant_model.dart';
+import 'package:doctor_app/model/apps/food_delivery/services_model.dart';
 import 'package:doctor_app/model/feature/banner_slider_model.dart';
 import 'package:doctor_app/model/screen/product_model.dart';
 import 'package:doctor_app/theme/colors.dart';
@@ -16,6 +17,7 @@ import 'package:doctor_app/ui/apps/food_delivery/restaurant_list.dart';
 import 'package:doctor_app/ui/apps/food_delivery/reusable_widget.dart';
 import 'package:doctor_app/ui/reusable/cache_image_network.dart';
 import 'package:doctor_app/ui/reusable/global_widget.dart';
+import 'package:doctor_app/utils.dart';
 import 'package:doctor_app/widgets/category_box.dart';
 import 'package:doctor_app/widgets/popular_doctor.dart';
 import 'package:doctor_app/widgets/textbox.dart';
@@ -23,6 +25,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:nb_utils/nb_utils.dart';
 import 'package:http/http.dart' as http;
+
+import '../ui/reusable/shimmer_loading.dart';
 
 List<ProductModel> _trendingData = [
   ProductModel(
@@ -135,6 +139,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  final _shimmerLoading = ShimmerLoading();
   final _reusableWidget = ReusableWidget();
   List<BannerSliderModel> bannerData = [];
   Color _bulletColor = Color(0xff01aed6);
@@ -142,7 +147,7 @@ class _HomePageState extends State<HomePage> {
   Color _color3 = Color(0xff777777);
   Color _color1 = Color(0xff777777);
   Color _color2 = Color(0xFF515151);
-  List<RestaurantModel> _nearbyFoodData = [];
+  List<ServicesModel> services = [];
 
   int _currentImageSlider = 0;
 
@@ -150,6 +155,9 @@ class _HomePageState extends State<HomePage> {
   final List<Widget> _pages = [_Widget1(), _Widget2(), _Widget3()];
   @override
   void initState() {
+    _getServices().then((value) => setState(() {
+          services = value;
+        }));
     bannerData.add(BannerSliderModel(
         id: 1,
         image:
@@ -162,25 +170,23 @@ class _HomePageState extends State<HomePage> {
         id: 3,
         image:
             'https://2micoaching.com/wp-content/uploads/2021/09/3810792.jpg'));
-    // bannerData.add(BannerSliderModel(
-    //     id: 3, image: GLOBAL_URL + '/assets/images/home_banner/4.jpg'));
-    // bannerData.add(BannerSliderModel(
-    //     id: 3, image: GLOBAL_URL + '/assets/images/home_banner/5.jpg'));
+
     super.initState();
   }
 
-  Future<List<RestaurantModel>> _getServices() async {
-    List<RestaurantModel> services = [];
+  Future<List<ServicesModel>> _getServices() async {
+    List<ServicesModel> services = [];
     List<dynamic> data = [];
 
-    http.Response response = await http.get(Uri.parse(
-        'https://booking.2micoaching.com/index.php/api/v1/services?page=1&length=4'));
+    http.Response response = await http.get(
+        Uri.parse(apiServiceUrlGlobal + '?page=1&length=4'),
+        headers: {'Authorization': basicAuth});
 
     if (response.statusCode == 200) {
-      Map<String, dynamic> map = jsonDecode(response.body);
-      data = map['data'];
+      data = jsonDecode(response.body);
+      print(data.length);
       for (int i = 0; i < data.length; i++) {
-        services.add(new RestaurantModel(
+        services.add(new ServicesModel(
             id: data[i]['id'],
             name: data[i]['name'],
             duration: data[i]['duration'],
@@ -188,10 +194,9 @@ class _HomePageState extends State<HomePage> {
             currency: data[i]['currency'],
             description: data[i]['description'],
             availabilitiesType: data[i]['availabilitiesType'],
-            location: data[i]['location'],
-            promo: data[i]['categoryId']));
+            location: data[i]['location']));
       }
-      // events.map((e) => Event.fromJson(jsonDecode(e.toString()))).toList();
+      // print(response.body);
     } else {
       print(response.reasonPhrase);
     }
@@ -203,46 +208,6 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       backgroundColor: appBgColor,
       floatingActionButton: _reusableWidget.fabCart(context),
-      // appBar:
-      //_globalWidget.globalAppBar(),
-      // backLayer: BackdropNavigationBackLayer(
-      //   items: [
-      //     ListTile(
-      //         title: Text(
-      //       "At 2Mi, we have a stable of diverse, certified, and experienced coaches.",
-      //       textAlign: TextAlign.justify,
-      //       style: TextStyle(
-      //           fontSize: 27, color: black, fontWeight: FontWeight.w500),
-      //     )),
-      //     // ListTile(
-      //     //     title: Text("Coaches", style: TextStyle(color: Colors.white))),
-      //     // ListTile(
-      //     //     title:
-      //     //         Text("Appointments", style: TextStyle(color: Colors.white))),
-      //   ],
-      //   onTap: (int position) => {setState(() => _currentIndex = position)},
-      // ),
-
-      // appBar: AppBar(
-      //   elevation: 0,
-      //   backgroundColor: Colors.transparent,
-      //   actions: [
-      //     Container(
-      //       padding: EdgeInsets.only(right: 10),
-      //       child: Badge(
-      //         position: BadgePosition.topEnd(top: 7, end: -4),
-      //         badgeContent: Text(
-      //           '1',
-      //           style: TextStyle(color: Colors.white),
-      //         ),
-      //         child: Icon(
-      //           Icons.notifications_sharp,
-      //           color: primary,
-      //         ),
-      //       ),
-      //     )
-      //   ],
-      // ),
       body: getBody(),
     );
   }
@@ -287,7 +252,7 @@ class _HomePageState extends State<HomePage> {
           crossAxisSpacing: 2,
           mainAxisSpacing: 2,
           crossAxisCount: 2,
-          children: List.generate(4, (index) {
+          children: List.generate(1, (index) {
             return _buildTrendingProductCard(index);
           }),
         ),
@@ -311,7 +276,7 @@ class _HomePageState extends State<HomePage> {
     return GestureDetector(
       onTap: () {
         Fluttertoast.showToast(
-            msg: 'Click ' + _nearbyFoodData[index].name,
+            msg: 'Click ' + services[index].name,
             toastLength: Toast.LENGTH_SHORT);
       },
       child: Card(
@@ -335,18 +300,7 @@ class _HomePageState extends State<HomePage> {
                         (MediaQuery.of(context).size.width / 2) * (1.6 / 4) -
                             12 -
                             1,
-                  )
-                  // buildCacheNetworkImage(
-                  //     width:
-                  //         (MediaQuery.of(context).size.width / 2) * (1.6 / 4) -
-                  //             12 -
-                  //             1,
-                  //     height:
-                  //         (MediaQuery.of(context).size.width / 2) * (1.6 / 4) -
-                  //             12 -
-                  //             1,
-                  //     url: _nearbyFoodData[index].image)
-                  ),
+                  )),
               Expanded(
                 child: Container(
                   margin: EdgeInsets.all(10),
@@ -354,11 +308,11 @@ class _HomePageState extends State<HomePage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(_nearbyFoodData[index].name,
+                      Text(services[index].name,
                           style: TextStyle(
                               fontSize: 11, fontWeight: FontWeight.bold)),
                       SizedBox(height: 4),
-                      Text(_nearbyFoodData[index].promo.toString() + ' product',
+                      Text(services[index].price.toString() + ' product',
                           style: TextStyle(fontSize: 9, color: _color3))
                     ],
                   ),
@@ -408,12 +362,24 @@ class _HomePageState extends State<HomePage> {
                 crossAxisSpacing: 8,
                 childAspectRatio: 0.625,
               ),
-              delegate: SliverChildBuilderDelegate(
-                (BuildContext context, int index) {
-                  return _buildItem(index);
-                },
-                childCount: 4,
-              ),
+              delegate: services.length > 0
+                  ? SliverChildBuilderDelegate(
+                      (BuildContext context, int index) {
+                        return _buildItem(index);
+                      },
+                      childCount: services.length,
+                    )
+                  // : _shimmerLoading.buildShimmerContent()
+                  : SliverChildListDelegate(
+                      <Widget>[
+                        Container(
+                          height: 100,
+                          child: Center(
+                            child: _shimmerLoading.buildShimmerContent(),
+                          ),
+                        )
+                      ],
+                    ),
             ),
           ),
         ])
@@ -421,7 +387,7 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget _buildItem(index) {
+  _buildItem(index) {
     final double boxImageSize =
         ((MediaQuery.of(context).size.width) - 24) / 2 - 12;
     return Container(
@@ -437,7 +403,8 @@ class _HomePageState extends State<HomePage> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => DetailRestaurantPage()));
+                    builder: (context) =>
+                        DetailRestaurantPage(service: services[index])));
             // Fluttertoast.showToast(
             //     msg: 'Click ' + _nearbyFoodData[index].name,
             //     toastLength: Toast.LENGTH_SHORT);
@@ -452,12 +419,7 @@ class _HomePageState extends State<HomePage> {
                     randomAsset(),
                     width: boxImageSize,
                     height: boxImageSize,
-                  )
-                  // buildCacheNetworkImage(
-                  //     width: boxImageSize,
-                  //     height: boxImageSize,
-                  //     url: _nearbyFoodData[index].image)
-                  ),
+                  )),
               Container(
                 margin: EdgeInsets.fromLTRB(8, 8, 8, 8),
                 child: Column(
@@ -465,7 +427,7 @@ class _HomePageState extends State<HomePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      _nearbyFoodData[index].name,
+                      services[index].name,
                       style: TextStyle(fontSize: 12, color: _color1),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -475,13 +437,10 @@ class _HomePageState extends State<HomePage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('\$ ' + _nearbyFoodData[index].promo,
+                          Text('\$ ' + services[index].price.toString(),
                               style: TextStyle(
                                   fontSize: 13, fontWeight: FontWeight.bold)),
-                          Text(
-                              _nearbyFoodData[index].promo.toString() +
-                                  ' ' +
-                                  'Sale',
+                          Text(services[index].price.toString() + ' ' + 'Sale',
                               style: TextStyle(fontSize: 11, color: SOFT_GREY))
                         ],
                       ),
@@ -491,7 +450,7 @@ class _HomePageState extends State<HomePage> {
                       child: Row(
                         children: [
                           Icon(Icons.location_on, color: SOFT_GREY, size: 12),
-                          Text(' ' + _nearbyFoodData[index].location,
+                          Text(' ' + services[index].location,
                               style: TextStyle(fontSize: 11, color: SOFT_GREY))
                         ],
                       ),
@@ -501,7 +460,7 @@ class _HomePageState extends State<HomePage> {
                       child: Row(
                         children: [
                           _globalWidget.createRatingBar(rating: 3, size: 12),
-                          Text('(' + _nearbyFoodData[index].location + ')',
+                          Text('(' + services[index].location + ')',
                               style: TextStyle(fontSize: 11, color: SOFT_GREY))
                         ],
                       ),
@@ -522,16 +481,6 @@ class _HomePageState extends State<HomePage> {
       child: Padding(
         padding: const EdgeInsets.only(left: 10, right: 10),
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-          // SizedBox(
-          //   height: 5,
-          // ),
-          // Container(
-          //   child: Text(
-          //     "Hi, Victor",
-          //     style: TextStyle(
-          //         fontSize: 27, color: primary, fontWeight: FontWeight.w500),
-          //   ),
-          // ),
           SizedBox(
             height: 5,
           ),
@@ -544,139 +493,15 @@ class _HomePageState extends State<HomePage> {
                 fontFamily: 'Trebuchet MS'),
             textAlign: TextAlign.center,
           )),
-          // SizedBox(
-          //   height: 5,
-          // ),
-          // Column(
-          //   children: [
-          //     CarouselSlider(
-          //       items: bannerData
-          //           .map((item) => Container(
-          //                 child: ClipRRect(
-          //                   borderRadius: BorderRadius.all(Radius.circular(12)),
-          //                   child: buildCacheNetworkImage(
-          //                       width: 1000, url: item.image),
-          //                 ),
-          //               ))
-          //           .toList(),
-          //       options: CarouselOptions(
-          //           autoPlay: true,
-          //           autoPlayInterval: Duration(seconds: 6),
-          //           autoPlayAnimationDuration: Duration(milliseconds: 300),
-          //           enlargeCenterPage: true,
-          //           onPageChanged: (index, reason) {
-          //             setState(() {
-          //               _currentImageSlider = index;
-          //             });
-          //           }),
-          //     ),
-          //     Row(
-          //       mainAxisAlignment: MainAxisAlignment.center,
-          //       children: bannerData.map((item) {
-          //         int index = bannerData.indexOf(item);
-          //         return AnimatedContainer(
-          //           duration: Duration(milliseconds: 150),
-          //           width: _currentImageSlider == index ? 16.0 : 8.0,
-          //           height: 8.0,
-          //           margin:
-          //               EdgeInsets.symmetric(vertical: 10.0, horizontal: 4.0),
-          //           decoration: BoxDecoration(
-          //             borderRadius: BorderRadius.circular(10),
-          //             color: _currentImageSlider == index
-          //                 ? _bulletColor
-          //                 : Colors.grey[300],
-          //           ),
-          //         );
-          //       }).toList(),
-          //     ),
-          //   ],
-          // ),
-          // getSlide(context),
-          // Container(
-          //   width: double.infinity,
-          //   padding: EdgeInsets.all(20),
-          //   height: 160,
-          //   decoration: BoxDecoration(
-          //       borderRadius: BorderRadius.circular(30),
-          //       image: DecorationImage(
-          //         image: NetworkImage(
-          //             "https://2micoaching.com/wp-content/uploads/2021/11/executive-coaching-and-leadership-coaching.jpg"),
-          //         fit: BoxFit.cover,
-          //       )),
-          // ),
           SizedBox(
             height: 15,
           ),
-          // _buildNearbyFood(boxImageSize),
-          // _createTrending(),
-          // SizedBox(
-          //   height: 25,
-          // ),
-          // Container(
-          //     child: Text(
-          //   "Services",
-          //   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-          // )),
-
-          CustomTextBox(), SizedBox(height: 10),
+          CustomTextBox(),
+          SizedBox(height: 10),
           _createAllProduct(),
-          // SingleChildScrollView(
-          //   padding: EdgeInsets.only(bottom: 5),
-          //   scrollDirection: Axis.horizontal,
-          //   child: Row(
-          //     children: [
-          //       CategoryBox(
-          //         title: "Heart",
-          //         icon: Icons.favorite,
-          //         color: Colors.red,
-          //       ),
-          //       CategoryBox(
-          //         title: "Medical",
-          //         icon: Icons.local_hospital,
-          //         color: Colors.blue,
-          //       ),
-          //       CategoryBox(
-          //         title: "Dental",
-          //         icon: Icons.details_rounded,
-          //         color: Colors.purple,
-          //       ),
-          //       CategoryBox(
-          //         title: "Healing",
-          //         icon: Icons.healing_outlined,
-          //         color: Colors.green,
-          //       ),
-          //     ],
-          //   ),
-          // ),
           SizedBox(
             height: 20,
           ),
-          // Container(
-          //     child: Text(
-          //   "Popular Doctors",
-          //   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
-          // )),
-          // SizedBox(height: 10),
-          // SingleChildScrollView(
-          //   padding: EdgeInsets.only(bottom: 5),
-          //   scrollDirection: Axis.horizontal,
-          //   child: Row(
-          //     children: [
-          //       PopularDoctor(
-          //         doctor: doctors[0],
-          //       ),
-          //       PopularDoctor(
-          //         doctor: doctors[1],
-          //       ),
-          //       PopularDoctor(
-          //         doctor: doctors[2],
-          //       ),
-          //     ],
-          //   ),
-          // ),
-          // SizedBox(
-          //   height: 20,
-          // ),
         ]),
       ),
     );
